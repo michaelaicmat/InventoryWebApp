@@ -1,0 +1,202 @@
+﻿@using System.Linq;
+@model  InventoryWebApp.ViewModels.InventoryViewModel
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Inventory Count Sheet</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @using (Html.BeginForm("SearchInventory", "Inventory", FormMethod.Post))
+                    {
+                        <div class="input-group">
+                            @*<input type="hidden" class="form-control" name="groupId" id="groupId" value="@Html.ValueFor(Model.SelectedRecord.ctgp)">*@
+                            <input type="text" class="form-control" name="inventoryId" id="inventoryId" placeholder="Search for item number..." required>
+                            <span class="input-group-btn">
+                                <button class="btn btn-block btn-primary" type="submit">Search</button>
+                            </span>
+                        </div>
+                        <br />
+                    }
+                    <label>CTGP / ITNO / WHLC / BLNO</label>
+
+                    <div class="input-group">
+                        <select class="custom-select" id="recordList" aria-label="Example select with button addon">
+                            @for (var i = 0; i < Model.Records.Count; i++)
+                            {
+                                var item = Model.Records[i];
+                                <option data-ctgp="@Html.DisplayFor(m => item.ctgp)"
+                                        data-itno="@Html.DisplayFor(m => item.itno)"
+                                        data-whlc="@Html.DisplayFor(m => item.whlc)"
+                                        data-blno="@Html.DisplayFor(m => item.blno)"
+                                        value="@Html.DisplayFor(m => item.itno)-@Html.DisplayFor(m => item.blno)">
+                                    @Html.DisplayFor(m => item.ctgp) / @Html.DisplayFor(m => item.itno) / @Html.DisplayFor(m => item.whlc) / @Html.DisplayFor(m => item.blno)
+                                </option>
+                            }
+                        </select>
+                        @using (Html.BeginForm("SelectInventory", "Inventory", FormMethod.Post, new { id = "select-inventory-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="countGroup" id="countGroup" />
+                            <input type="hidden" name="itemNumber" id="itemNumber" />
+                            <input type="hidden" name="warehouseLoc" id="warehouseLoc" />
+                            <input type="hidden" name="batchLot" id="batchLot" />
+                        }
+                    </div> <br />
+
+                    @using (Html.BeginForm("UpdateInventory", "Inventory", FormMethod.Post))
+                    {
+                        var item = Model.SelectedRecord;
+                        @Html.AntiForgeryToken()
+                        <form>
+                            <input type="hidden" class="form-control" id="ctgp" name="ctgp" readonly value="@Html.DisplayFor(m => item.ctgp)">
+
+                            <div class=".container-fluid">
+                                <div class="row align-items-start">
+
+                                    <div class="form-group col-4">
+                                        <label>WH #</label>
+                                        <input type="text" class="form-control" id="whid" name="whid" readonly value="@Html.DisplayFor(m => item.whid)">
+                                    </div>
+
+                                    <div class="form-group col-4">
+                                        <label>Item #</label>
+                                        <input type="text" class="form-control" id="itNo" name="itNo" readonly value="@Html.DisplayFor(m => item.itno)">
+                                    </div>
+
+                                    <div class="form-group col-4">
+                                        <label>Stocks UM</label>
+                                        <input type="text" class="form-control" id="unmsr" name="unmsr" readonly value="@Html.DisplayFor(m => item.unmsr)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="example-textarea">Description</label>
+                                <textarea class="form-control" id="itdsc" name="itdsc" rows="2" readonly>@Html.DisplayFor(m => item.itdsc)</textarea>
+                            </div>
+
+
+                            <div class=".container-fluid">
+                                <div class="row align-items-start">
+
+                                    <div class="form-group col-6">
+                                        <label>Batch / Lot</label>
+                                        <input type="text" class="form-control" id="blno" name="blno" readonly value="@Html.DisplayFor(m => item.blno)">
+                                    </div>
+
+                                    <div class="form-group col-6">
+                                        <label>Location</label>
+
+                                        <input type="text" class="form-control" id="whlc" name="whlc" readonly value="@Html.DisplayFor(m => item.whlc)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=".container-fluid">
+                                <div class="row align-items-start">
+                                    <div class="col-form-label col-2"> <label class=".label-default">Bundles</label></div>
+                                    <div class="form-group col-10">
+
+                                        @if (item.umbd == "")
+                                        {
+                                            <input data-toggle="touchspin" data-bts-max="9999999999" data-decimals="2" data-step="1" type="decimal" class="form-control"
+                                                   id="bdentry" name="bdentry" placeholder="0" data-bts-button-down-class="btn btn-danger"
+                                                   data-bts-button-up-class="btn btn-info" value="0" readonly disabled>
+                                        }
+                                        else
+                                        {
+                                            <input data-toggle="touchspin" type="decimal" data-bts-max="9999999999" data-decimals="2" data-step="1"
+                                                   id="bdentry" name="bdentry" placeholder="0.00" data-bts-button-down-class="btn btn-danger"
+                                                   data-bts-button-up-class="btn btn-info" value="@Html.DisplayFor(m => item.bdentry)">
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class=".container-fluid">
+                                <div class="row align-items-start">
+                                    <div class="col-form-label col-2"> <label class=".label-default">Sections</label></div>
+                                    <div class="form-group col-10">
+
+                                        @if (item.umse == "")
+                                        {
+                                            <input data-toggle="touchspin" type="decimal" data-bts-max="9999999999" data-decimals="2" data-step="1"
+                                                   class="form-control" id="seentry" name="seentry" data-bts-button-down-class="btn btn-danger"
+                                                   data-bts-button-up-class="btn btn-info" placeholder="0" value="0" readonly disabled>
+                                        }
+                                        else
+                                        {
+                                            <input data-toggle="touchspin" type="decimal" id="seentry" data-bts-max="9999999999" name="seentry"
+                                                   data-decimals="2" data-step="1" data-bts-button-down-class="btn btn-danger"
+                                                   data-bts-button-up-class="btn btn-info" placeholder="0" value="@Html.DisplayFor(m => item.seentry)">
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=".container-fluid">
+                                <div class="row align-items-start">
+                                    <div class="col-form-label col-2"> <label class=".label-default">Stocks</label></div>
+                                    <div class="form-group col-10">
+                                        <input data-toggle="touchspin" type="decimal" data-bts-max="9999999999" id="stkentry" data-decimals="2" data-step="0.1"
+                                               name="stkentry" data-bts-button-down-class="btn btn-danger"
+                                               data-bts-button-up-class="btn btn-info" placeholder="0" value="@Html.DisplayFor(m => item.stkentry)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=".container-fluid">
+                                <div class="row align-items-start">
+                                    <div class=" col-6">
+                                        <button type="submit" class="btn btn-block btn-primary" id="btnSave" name="btnbSave">Save</button>
+                                    </div>
+                                    <div class=" col-6">
+                                        <button type="button" class="btn btn-block btn-danger" id="btnClear" name="btnClear" onclick="this.form.reset();">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var initialSelect = true;
+        $(document).ready(function () {
+            $('#recordList').val('@Model.SelectedRecord.itno-@Model.SelectedRecord.blno').change();
+            initialSelect = false;
+        });
+
+        $('#recordList').change(function () {
+            if (initialSelect) {
+                return;
+            }
+
+            var selectedItem = $('#recordList').find(":selected");
+            $("#countGroup").val(selectedItem.data('ctgp'));
+            $("#itemNumber").val(selectedItem.data('itno'));
+            $("#warehouseLoc").val(selectedItem.data('whlc'));
+            $("#batchLot").val(selectedItem.data('blno'));
+            $('#select-inventory-form').submit();
+        });
+    </script>
+}

@@ -1,0 +1,65 @@
+﻿@model InventoryWebApp.ViewModels.CountGroupViewModel
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Group Page</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form id="inventoryForm" method="post" action="/Inventory/Index">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="groupId" name="groupId" />
+                        <table class="table table-centered mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Count&nbsp;#</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.GroupRecords)
+                                {
+                                    <tr>
+                                        <td>@item.ctgp</td>
+                                        <td>@item.ctgd</td>
+                                        <td><i class="mdi mdi-circle text-success"></i></td>
+                                        <td class="table-action">
+                                            <button class="mdi mdi-pencil" style="border: none; background-color: transparent;" onclick="submitForm('@item.ctgp')">
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitForm(ctgp) {
+        $('#groupId').val(ctgp);
+        $('#inventoryForm').submit();
+    }
+</script>
+
+@if (Model.ShowNoRowAlert)
+{
+    <script>
+        alert("Count group is empty. Please select another one.");
+    </script>
+}

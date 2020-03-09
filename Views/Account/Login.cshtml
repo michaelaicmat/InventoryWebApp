@@ -1,0 +1,75 @@
+﻿@using InventoryWebApp.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_LayoutUnauthenticated.cshtml";
+}
+
+<body class="authentication-bg pb-0" data-layout-config='{"darkMode":false}'>
+    <div class="auth-fluid">
+        <div class="auth-fluid-form-box">
+            <div class="align-items-center d-flex h-100">
+                <div class="card-body">
+                    <div class="auth-brand text-center text-lg-left">
+                        <a href="index.html" class="logo-dark">
+                            <span><img src="/Content/assets/images/BBLogo.jpg" alt="" height="40"></span>
+                        </a>
+                        <a href="index.html" class="logo-light">
+                            <span><img src="/Content/assets/images/BBLogo.jpg" alt="" height="40"></span>
+                        </a>
+                    </div>
+
+                    <h4 class="mt-0">Sign In</h4>
+                    <p class="text-muted mb-4">Enter your email address and password to access account.</p>
+
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            <a href="ForgotPassword" class="text-muted float-right"><small>Forgot your password?</small></a>
+                            @Html.LabelFor(m => m.Password)
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <div class="custom-control custom-checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })
+                                @Html.LabelFor(m => m.RememberMe, new { @class = "custom-control-label" })
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group mb-0 text-center">
+                            <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-login"></i> Log In </button>
+                            <button class="btn btn-primary btn-block" type="button" onclick="registerUser()"><i class="uil uil-user-plus"></i> Register </button>
+                                @*<a href="/Account/Register" class="text-muted float-right"><input type="button" class="btn btn-primary btn-block">Create an Account</a>*@
+
+                        </div>
+                    }
+                </div> 
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type ="text/javascript">
+    function registerUser() {
+        window.location.href = "Register";
+        return false;
+      
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

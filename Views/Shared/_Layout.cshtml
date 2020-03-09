@@ -1,0 +1,190 @@
+﻿@using Microsoft.AspNet.Identity;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <title>@ViewBag.Title - Inventory Web App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=.86, shrink-to-fit=no">
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Content/assets/images/BBLogo.jpg">
+
+    <!-- App css -->
+    <link href="/Content/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/assets/css/app-creative.min.css" rel="stylesheet" type="text/css" id="light-style" />
+    <link href="/Content/assets/css/app-creative-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
+
+
+</head>
+<body class="loading" data-layout="topnav" data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": false}'>
+
+    <div class="wrapper">
+
+        <div class="content-page">
+            <div class="content">
+                <div class="navbar-custom topnav-navbar topnav-navbar-dark">
+                    <div class="container-fluid">
+                 
+                        <a href="" class="topnav-logo">
+                            <span class="topnav-logo-lg">
+                                <img src="/Content/assets/images/BBLogo.jpg" alt="" height="50">
+                            </span>
+                            <span class="topnav-logo-sm">
+                                <img src="/Content/assets/images/BBLogo.jpg" alt="" height="50">
+                            </span>
+                        </a>
+
+                        <ul class="list-unstyled topbar-right-menu float-right mb-0">
+
+                            <li class="notification-list">
+                                <a class="nav-link right-bar-toggle" href="javascript: void(0);">
+                                    <i class="dripicons-gear noti-icon"></i>
+                                </a>
+                            </li>
+
+                            <li class="dropdown notification-list">
+                                <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
+                                   aria-expanded="false">
+                                    <span class="account-user-avatar">
+                                        <img src="/Content/assets/images/user.png" alt="user-image" class="rounded-circle">
+                                    </span>
+                                    <span>
+                                        <span class="account-user-name" id="name">Welcome,</span>
+                                        <span class="account-position" id="username">@User.Identity.GetUserName()</span>
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown" aria-labelledby="topbar-userdrop">
+                                    <!-- item-->
+                                    <div class=" dropdown-header noti-title">
+                                        <h6 class="text-overflow m-0">Welcome !</h6>
+                                    </div>
+
+                                    <!-- item-->
+                                    <a href="/Group/Index" class="dropdown-item notify-item">
+                                        <i class="dripicons-menu mr-1"></i>
+                                        <span>Count Group</span>
+                                    </a>
+
+                                    <!-- item-->
+                                    <a href="/Home/Contact" class="dropdown-item notify-item">
+                                        <i class="mdi mdi-lifebuoy mr-1"></i>
+                                        <span>Contact Us</span>
+                                    </a>
+
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item notify-item">
+                                                <i class="mdi mdi-logout mr-1"></i>
+                                                <span>Logout</span>
+                                            </a>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                                            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                                        </ul>
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- end Topbar -->
+                @RenderBody()
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                © Brampton Brick 2020
+                            </div>
+
+                        </div>
+                    </div>
+                </footer>
+                <!-- end Footer -->
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- END wrapper -->
+        <!-- Right Sidebar -->
+        <div class="right-bar">
+
+            <div class="rightbar-title">
+                <a href="javascript:void(0);" class="right-bar-toggle float-right">
+                    <i class="dripicons-cross noti-icon"></i>
+                </a>
+                <h5 class="m-0">Settings</h5>
+            </div>
+
+            <div class="rightbar-content h-100" data-simplebar>
+
+                <div class="p-3">
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Customize </strong> the overall color scheme, layout width, etc.
+                    </div>
+
+                    <!-- Settings -->
+                    <h5 class="mt-3">Color Scheme</h5>
+                    <hr class="mt-1" />
+
+                    <div class="custom-control custom-switch mb-1">
+                        <input type="radio" class="custom-control-input" name="color-scheme-mode" value="light" id="light-mode-check"
+                               checked />
+                        <label class="custom-control-label" for="light-mode-check">Light Mode</label>
+                    </div>
+
+                    <div class="custom-control custom-switch mb-1">
+                        <input type="radio" class="custom-control-input" name="color-scheme-mode" value="dark" id="dark-mode-check" />
+                        <label class="custom-control-label" for="dark-mode-check">Dark Mode</label>
+                    </div>
+
+                    <!-- Width -->
+                    <h5 class="mt-4">Width</h5>
+                    <hr class="mt-1" />
+                    <div class="custom-control custom-switch mb-1">
+                        <input type="radio" class="custom-control-input" name="width" value="fluid" id="fluid-check" checked />
+                        <label class="custom-control-label" for="fluid-check">Fluid</label>
+                    </div>
+                    <div class="custom-control custom-switch mb-1">
+                        <input type="radio" class="custom-control-input" name="width" value="boxed" id="boxed-check" />
+                        <label class="custom-control-label" for="boxed-check">Boxed</label>
+                    </div>
+
+                    <button class="btn btn-primary btn-block mt-4" id="resetBtn">Reset to Default</button>
+                </div>
+            </div>
+        </div>
+        <div class="rightbar-overlay"></div>
+    </div>
+
+    <script src="/Content/assets/js/vendor.min.js"></script>
+    <script src="/Content/assets/js/app.min.js"></script>
+
+    <script src="/Content/assets/js/vendor/handlebars.min.js"></script>
+    <script src="/Content/assets/js/vendor/typeahead.bundle.min.js"></script>
+
+    <script src="/Content/assets/js/pages/demo.typehead.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //
+            $("#btnClear").click(function () {
+                $(this).closest('form').find("input[type=number]").val("0");
+            });
+        });
+    </script>
+    @RenderSection("scripts", false)
+</body>
+</html>

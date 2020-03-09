@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<body class="authentication-bg pb-0" data-layout-config='{"darkMode":false}'>
+
+    <div class="auth-fluid">
+        <!--Auth fluid left content -->
+        <div class="auth-fluid-form-box">
+            <div class="align-items-center d-flex h-100">
+                <div class="card-body">
+
+                    <!-- Logo -->
+                    <div class="auth-brand text-center text-lg-left">
+                        <a href="index.html" class="logo-dark">
+                            <span><img src="/Content/assets/images/BBLogo.jpg" alt="" height="40"></span>
+                        </a>
+                        <a href="index.html" class="logo-light">
+                            <span><img src="/Content/assets/images/BBLogo.jpg" alt="" height="40"></span>
+                        </a>
+                    </div>
+
+                    <!-- title-->
+                    <h4 class="mt-0">Sign In</h4>
+                    <p class="text-muted mb-4">Enter your email address and password to access account.</p>
+
+                    <!-- form -->
+                    <form action="/User/Verify" method="post">
+                        <div class="form-group">
+                            <label for="emailaddress">Email address</label>
+                            <input class="form-control" type="email" id="EmailAddress" required="" name="EmailAddress" placeholder="Enter your email">
+                        </div>
+
+
+                        <div class="form-group">
+                            <a href="pages-recoverpw-2.html" class="text-muted float-right"><small>Forgot your password?</small></a>
+                            <label for="password">Password</label>
+                            <input class="form-control" type="password" required="" id="Password" name="Password" placeholder="Enter your password">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="checkbox-signin">
+                                <label class="custom-control-label" for="checkbox-signin">Remember me</label>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group mb-0 text-center">
+                            <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-login"></i> Log In </button>
+                        </div>
+                        <!-- social-->
+                    </form>
+                    <!-- end form-->
+
+
+                </div> <!-- end .card-body -->
+            </div> <!-- end .align-items-center.d-flex.h-100-->
+        </div>
+        <!-- end auth-fluid-form-box-->
+
+    </div>
+    <!-- end auth-fluid-->
+    <!-- bundle -->
+
+
+</body>

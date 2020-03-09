@@ -1,0 +1,60 @@
+﻿
+@{
+ 
+    Layout = "/Views/Shared/_LayoutUnauthenticated.cshtml";
+}
+
+
+<body class="authentication-bg pb-0" data-layout-config='{"darkMode":false}'>
+    <div class="auth-fluid">
+        <div class="auth-fluid-form-box">
+            <div class="align-items-center d-flex h-100">
+                <div class="card-body">
+                    <div class="auth-brand text-center text-lg-left">
+                        <a href="index.html" class="logo-dark">
+                            <span><img src="/Content/assets/images/BBLogo.jpg" alt="" height="40"></span>
+                        </a>
+                        <a href="index.html" class="logo-light">
+                            <span><img src="/Content/assets/images/BBLogo.jpg" alt="" height="40"></span>
+                        </a>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label>Full name</label>
+                            <input type="text" class="form-control" id="fullname" name="fullName" placeholder="Enter your name here.." required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>What can we help you with?</label>
+                            <textarea class="form-control" id="message" name="message" placeholder="Tell us what we can help you with.." required ></textarea>
+                        </div>
+
+                        <br />
+                        <div class="form-group mb-0 text-center">
+                            <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-email-send-outline"></i> Submit Message </button>
+                            <button class="btn btn-primary btn-block" type="submit" onclick="backToHome()"><i class="mdi mdi-home"></i> Back to home</button>
+
+
+                        </div>
+
+                    </form>
+
+                
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    function backToHome() {
+        window.location.href = "Index";
+        return false;
+
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
