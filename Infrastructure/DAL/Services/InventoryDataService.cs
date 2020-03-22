@@ -1,15 +1,12 @@
-﻿using InventoryWebApp.Infrastructure.Extensions;
-using InventoryWebApp.Models;
+﻿using InventoryWebApp.Models;
 using Microsoft.AspNet.Identity;
-using System.Globalization;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Web;
-using Microsoft.Ajax.Utilities;
+using System.Web.Mvc;
+using System.Web.WebPages.Razor;
 
 namespace InventoryWebApp.Infrastructure.DAL.Services
 {
@@ -57,21 +54,25 @@ namespace InventoryWebApp.Infrastructure.DAL.Services
                     });
                 }
 
+              
+
                 return inventoryRecords;
             }
         }
 
         //Searching item number
-        public static List<InventoryRecord> GetInventoryRecordById(string inventoryId)
+        public static List<InventoryRecord> GetInventoryRecordById(string inventoryId, string groupId)
         {
             using (var dal = new DataAccessLayer())
             {
                 dal.SqlQuery = @"
                         SELECT * 
                         FROM tblGroupTable 
-                        WHERE ITNO = @ITNO";
+                        WHERE CTGP = @CTGP AND
+                        ITNO = @ITNO";
 
                 dal.SqlParameters.Add(new SqlParameter("@ITNO", inventoryId.ToString()));
+                dal.SqlParameters.Add(new SqlParameter("@CTGP", groupId.ToString()));
                 var inventoryRecords = new List<InventoryRecord>();
                 var dataTable = dal.ExecuteCommand();
                 foreach (DataRow row in dataTable.Rows)

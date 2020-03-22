@@ -3,11 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InventoryWebApp.Models
 {
-
-
-
-
-
     public class ExternalLoginConfirmationViewModel
     {
         [Required]

@@ -11,15 +11,31 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using InventoryWebApp.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using InventoryWebApp.Infrastructure.Settings;
 
 namespace InventoryWebApp
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            var client = new SendGridClient(AppSettings.EmailSettings.SendGridApiKey);
+            var from = AppSettings.EmailSettings.GetFromEmail();
+            var to = new EmailAddress(message.Destination, message.Destination);
+            var msg = MailHelper.CreateSingleEmail(from, to, message.Subject, message.Body, message.Body);
+            await client.SendEmailAsync(msg);
+        }
+
+        //await EmailService.SendAsync("New IT Inquiry", "generage body here");
+        public async static Task SendAsync(string subject, string body)
+        {
+            var client = new SendGridClient(AppSettings.EmailSettings.SendGridApiKey);
+            var from = AppSettings.EmailSettings.GetFromEmail();
+            var to = AppSettings.EmailSettings.GetITSupportEmail();
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, body, body);
+            await client.SendEmailAsync(msg);
         }
     }
 

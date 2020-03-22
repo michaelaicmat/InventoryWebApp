@@ -10,6 +10,9 @@ using System.Linq;
 
 namespace InventoryWebApp.Controllers
 {
+
+    //Check if group doesnt have any item, and displays a pop up.
+    //Return to the same window, else redirect.
     [Authorize]
     public class InventoryController : Controller
     {
@@ -23,31 +26,38 @@ namespace InventoryWebApp.Controllers
             {
                 return RedirectToAction("Index", "Group", new { showNoRowAlert = true });
             }
-
+            ViewBag.iD = groupId;
             return View("Inventory", new InventoryViewModel() {
+                
                 Records = inventoryItems,
                 SelectedRecord = inventoryItems.First()
+
             });
+           
         }
 
         [HttpPost]
-        public ActionResult SearchInventory(string inventoryId)
+        public ActionResult SearchInventory(string inventoryId, string groupId)
         {
-            //Should search item with the smae inventoryId and countGroup from previous page
-            //Dropdown shld stay the same
-            // on search, form shld be populated of what u searched
-            var inventoryItems = InventoryDataService.GetInventoryRecordById(inventoryId);
-            
-          
-            if (inventoryItems.Count == 1)
-            {
-                return RedirectToAction("Index", "Group");
-            }
 
+            var inventoryItem = InventoryDataService.GetInventoryRecordById(inventoryId, groupId);
+            var inventoryItems = InventoryDataService.GetInventoryRecordsByGroupId(groupId);
+            ViewBag.iD = groupId;
+
+            if (inventoryItem.Count == 0)
+            {
+                return View("Inventory", new InventoryViewModel()
+                {
+
+                    Records = inventoryItems,
+                    SelectedRecord = inventoryItems.First()
+
+                });
+            }
             return View("Inventory", new InventoryViewModel()
             {
                 Records = inventoryItems,
-                SelectedRecord = inventoryItems.First()
+                SelectedRecord = inventoryItem.First()
             });
         }
 
@@ -56,7 +66,7 @@ namespace InventoryWebApp.Controllers
         public ActionResult SelectInventory(string countGroup, string itemNumber, string warehouseLoc, string batchLot)
         {
             var inventoryItems = InventoryDataService.GetInventoryRecordsByGroupId(countGroup);
-
+            ViewBag.iD = countGroup;
             return View("Inventory", new InventoryViewModel()
             {
                 Records = inventoryItems,
